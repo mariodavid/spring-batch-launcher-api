@@ -5,20 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.faktorzehn</groupId>
-        <artifactId>spring-boot-batch-api-example</artifactId>
+        <artifactId>sample</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>sample</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>apps</module>
-        <module>job-bill</module>
-        <module>job-greeting</module>
-        <module>apps/job-app-http-proxy</module>
-        <module>apps/job-app-shell-greeting-local</module>
-    </modules>
+    <artifactId>job-greeting</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -26,4 +18,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.faktorzehn</groupId>
+            <artifactId>batch-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

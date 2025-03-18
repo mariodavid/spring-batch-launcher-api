@@ -14,8 +14,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>job-app-print-local</module>
-        <module>job-app-proxy</module>
+        <module>job-app-http-greeting-local</module>
+        <module>job-app-http-proxy</module>
     </modules>
 
     <properties>
@@ -31,12 +31,13 @@
         </dependency>
         <dependency>
             <groupId>de.faktorzehn</groupId>
-            <artifactId>batch-extservice</artifactId>
+            <artifactId>job-greeting</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>de.faktorzehn</groupId>
-            <artifactId>job-print</artifactId>
+            <artifactId>batch-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -56,10 +57,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
 
