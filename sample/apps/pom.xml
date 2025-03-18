@@ -16,6 +16,7 @@
     <modules>
         <module>job-app-http-greeting-local</module>
         <module>job-app-http-proxy</module>
+        <module>job-app-shell-greeting-local</module>
     </modules>
 
     <properties>
@@ -30,7 +31,7 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.faktorzehn</groupId>
+            <groupId>de.faktorzehn.sample</groupId>
             <artifactId>job-greeting</artifactId>
             <version>${project.version}</version>
         </dependency>
