@@ -4,7 +4,7 @@ POST http://localhost:8080/jobs
 Content-Type: application/json
 
 {
-  "jobName": "sampleJob",
+  "jobName": "printJob",
   "jobParameters": {
     "timeout": 5000
   }
@@ -12,11 +12,11 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/jobs
+POST http://localhost:8081/jobs
 Content-Type: application/json
 
 {
-  "jobName": "billJob",
+  "jobName": "printJob",
   "jobParameters": {
     "timeout": 5000
   }
@@ -33,4 +33,4 @@ POST http://localhost:8080/jobs/1/restart
 
 ###
 
-GET http://localhost:8080/jobs/2
+GET http://localhost:8080/jobs/1
