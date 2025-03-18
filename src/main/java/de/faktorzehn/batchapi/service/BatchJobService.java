@@ -1,4 +1,4 @@
-package de.faktorzehn.batchapi;
+package de.faktorzehn.batchapi.service;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -8,15 +8,11 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.core.launch.NoSuchJobException;
-import org.springframework.batch.core.launch.NoSuchJobExecutionException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.stereotype.Service;
 
 import de.faktorzehn.batchapi.controller.JobRequest;
@@ -30,13 +26,12 @@ public class BatchJobService {
     private final JobOperator jobOperator;
 
 
-    public BatchJobService(JobLauncher asyncJobLauncher, JobExplorer jobExplorer, JobRegistry jobRegistry, JobOperator jobOperator) {
-        this.asyncJobLauncher = asyncJobLauncher;
+    public BatchJobService(JobLauncher jobLauncher, JobExplorer jobExplorer, JobRegistry jobRegistry, JobOperator jobOperator) {
+        this.asyncJobLauncher = jobLauncher;
         this.jobExplorer = jobExplorer;
         this.jobRegistry = jobRegistry;
         this.jobOperator = jobOperator;
     }
-
 
     public Long launchJob(JobRequest jobRequest) throws NoSuchJobException {
 
@@ -55,15 +50,22 @@ public class BatchJobService {
     }
 
 
-    public void restartJob(Long executionId)  {
-
+    public Long restartJob(Long executionId)  {
         try {
-            jobOperator.restart(executionId);
+            return jobOperator.restart(executionId);
         } catch (Exception e) {
             throw new RuntimeException("Job-Restart failed", e);
         }
     }
 
+    public void stop(long executionId) {
+        try {
+            jobOperator.stop(executionId);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Job-Abondon failed", e);
+        }
+    }
 
     public JobParameters convertToJobParameters(Map<String, Object> parameters) {
         JobParametersBuilder builder = new JobParametersBuilder();
@@ -82,4 +84,5 @@ public class BatchJobService {
     public JobExecution getJobExecution(Long executionId) {
         return jobExplorer.getJobExecution(executionId);
     }
+
 }

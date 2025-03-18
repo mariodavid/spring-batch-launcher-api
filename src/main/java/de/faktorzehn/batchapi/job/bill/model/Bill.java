@@ -1,4 +1,4 @@
-package de.faktorzehn.cloud.task.model;
+package de.faktorzehn.batchapi.job.bill.model;
 
 public class Bill {
 

@@ -1,27 +1,12 @@
-package de.faktorzehn.batchapi.api;
+package de.faktorzehn.batchapi.controller;
 
-public class JobStatusResponse {
-    private String executionId;
-    private String status;
-    
-    public JobStatusResponse(String executionId, String status) {
-        this.executionId = executionId;
-        this.status = status;
-    }
-    
-    public String getExecutionId() {
-        return executionId;
-    }
-    
-    public void setExecutionId(String executionId) {
-        this.executionId = executionId;
-    }
-    
-    public String getStatus() {
-        return status;
-    }
-    
-    public void setStatus(String status) {
-        this.status = status;
-    }
-}
+import java.time.LocalDateTime;
+
+public record JobStatusResponse(
+        String executionId,
+        String status,
+        LocalDateTime startTime,
+        LocalDateTime endTime,
+        String exitStatus,
+        String errorMessage
+) {}

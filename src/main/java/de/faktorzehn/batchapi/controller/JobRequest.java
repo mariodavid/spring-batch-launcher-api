@@ -1,13 +1,7 @@
-package de.faktorzehn.batchapi.api;
+package de.faktorzehn.batchapi.controller;
 
-public class JobRequest {
-    private String jobParameter;
-    
-    public String getJobParameter() {
-        return jobParameter;
-    }
-    
-    public void setJobParameter(String jobParameter) {
-        this.jobParameter = jobParameter;
-    }
-}
+import java.util.Map;
+
+public record JobRequest(
+    String jobName,
+    Map<String, Object> jobParameters){}

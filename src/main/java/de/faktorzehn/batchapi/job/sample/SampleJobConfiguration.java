@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-public class SampleJob {
+public class SampleJobConfiguration {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
 
-    public SampleJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    public SampleJobConfiguration(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;
     }

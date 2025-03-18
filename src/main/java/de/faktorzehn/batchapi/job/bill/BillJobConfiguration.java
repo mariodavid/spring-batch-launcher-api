@@ -2,6 +2,8 @@ package de.faktorzehn.batchapi.job.bill;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -28,7 +30,9 @@ import de.faktorzehn.batchapi.job.bill.model.Usage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-public class BillJob {
+public class BillJobConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(BillJobConfiguration.class);
 
     @Bean
     public Job job(
@@ -52,9 +56,8 @@ public class BillJob {
     }
 
     @Bean
-    public JsonItemReader<Usage> jsonItemReader(@Value("${classpath:bill/usageinfo.json}") Resource usageResource) {
+    public JsonItemReader<Usage> jsonItemReader(@Value("classpath:usageinfo.json") Resource usageResource, ObjectMapper objectMapper) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
         JacksonJsonObjectReader<Usage> jsonObjectReader =
                 new JacksonJsonObjectReader<>(Usage.class);
         jsonObjectReader.setMapper(objectMapper);
@@ -80,7 +83,23 @@ public class BillJob {
 
     @Bean
     ItemProcessor<Usage, Bill> billProcessor() {
-        return new BillProcessor();
+        return usage -> {
+
+            log.info("Processing usage: {}", usage);
+            log.info("Calculating bill amount");
+            Double billAmount = usage.getDataUsage() * .001 + usage.getMinutes() * .01;
+            Thread.sleep(10_000);
+            log.info("Bill amount calculated: {}", billAmount);
+
+            return new Bill(
+                    usage.getId(),
+                    usage.getFirstName(),
+                    usage.getLastName(),
+                    usage.getDataUsage(),
+                    usage.getMinutes(),
+                    billAmount
+            );
+        };
     }
 
 }

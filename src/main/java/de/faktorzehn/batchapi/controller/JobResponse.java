@@ -1,4 +1,4 @@
-package de.faktorzehn.batchapi.api;
+package de.faktorzehn.batchapi.controller;
 
 public class JobResponse {
     private String executionId;
