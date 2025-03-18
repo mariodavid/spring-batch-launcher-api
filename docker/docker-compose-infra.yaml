@@ -1,0 +1,47 @@
+services:
+
+  scdf-postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: scdf
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5438:5432"
+
+  app-postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5439:5432"
+
+  scdf:
+    user: root
+    image: springcloud/spring-cloud-dataflow-server:2.11.5-jdk17
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://scdf-postgres:5432/scdf
+        SPRING_DATASOURCE_USERNAME: postgres
+        SPRING_DATASOURCE_PASSWORD: postgres
+        SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+        SPRING_CLOUD_CONFIG_ENABLED: false
+        SPRING_CLOUD_DATAFLOW_FEATURES_STREAMS_ENABLED: false
+        SPRING_CLOUD_DATAFLOW_FEATURES_SCHEDULES_ENABLED: false
+        SPRING_CLOUD_DATAFLOW_FEATURES_TASKS_ENABLED: true
+    entrypoint: >
+      /bin/sh -c "
+         apt-get update && apt-get install --no-install-recommends -y wget &&
+         wget --no-check-certificate -P /tmp/ https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz &&
+         tar -xvf /tmp/docker-latest.tgz --directory /tmp/ &&
+         mv /tmp/docker/docker /usr/local/bin && /cnb/process/web"
+    ports:
+      - "9393:9393"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/config.json:/root/.docker/config.json
+
+networks:
+  default:
+    name: spring-cloud-task-example
