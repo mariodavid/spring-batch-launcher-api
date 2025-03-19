@@ -1,55 +1,43 @@
 package de.faktorzehn.batch.extservice.service;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.configuration.JobRegistry;
+import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.explore.JobExplorer;
-import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.JobOperator;
-import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import de.faktorzehn.batch.extapi.JobRequest;
+import de.faktorzehn.batch.core.JobLauncherService;
+import de.faktorzehn.batch.core.exception.JobExecutionCreationFailedException;
+import de.faktorzehn.batch.persistence.AcceptedJob;
+import de.faktorzehn.batch.persistence.AcceptedJobRepository;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Service
 public class BatchJobService {
     
-    private final JobLauncher asyncJobLauncher;
     private final JobExplorer jobExplorer;
-    private final JobRegistry jobRegistry;
     private final JobOperator jobOperator;
+    private final JobLauncherService jobLauncherService;
+    private final AcceptedJobRepository externalJobExecutionMappingRepository;
+    private final ObjectMapper objectMapper;
 
 
-    public BatchJobService(JobLauncher jobLauncher, JobExplorer jobExplorer, JobRegistry jobRegistry, JobOperator jobOperator) {
-        this.asyncJobLauncher = jobLauncher;
+    public BatchJobService(JobExplorer jobExplorer, JobOperator jobOperator, JobLauncherService jobLauncherService, AcceptedJobRepository externalJobExecutionMappingRepository, ObjectMapper objectMapper) {
         this.jobExplorer = jobExplorer;
-        this.jobRegistry = jobRegistry;
         this.jobOperator = jobOperator;
+        this.jobLauncherService = jobLauncherService;
+        this.externalJobExecutionMappingRepository = externalJobExecutionMappingRepository;
+        this.objectMapper = objectMapper;
     }
-
-    public Long launchJob(JobRequest jobRequest) throws NoSuchJobException {
-
-        Job job = findJob(jobRequest);
-
-        try {
-            JobExecution jobExecution = asyncJobLauncher.run(job, convertToJobParameters(jobRequest.jobParameters()));
-            return jobExecution.getId();
-        } catch (Exception e) {
-            throw new RuntimeException("Job-Start failed", e);
-        }
-    }
-
-    private Job findJob(JobRequest jobRequest) throws NoSuchJobException {
-        return jobRegistry.getJob(jobRequest.jobName());
-    }
-
 
     public Long restartJob(Long executionId)  {
         try {
@@ -68,22 +56,67 @@ public class BatchJobService {
         }
     }
 
-    public JobParameters convertToJobParameters(Map<String, Object> parameters) {
-        JobParametersBuilder builder = new JobParametersBuilder();
-        parameters.forEach((key, value) -> {
-            switch (value) {
-                case Number number -> builder.addLong(key, number.longValue());
-                case Date date -> builder.addDate(key, date);
-                case LocalDate localDate -> builder.addLocalDate(key, localDate);
-                case null, default -> builder.addString(key, value != null ? value.toString() : "");
-            }
-        });
-        builder.addLong("time", System.currentTimeMillis());
-        return builder.toJobParameters();
-    }
-
     public JobExecution getJobExecution(Long executionId) {
         return jobExplorer.getJobExecution(executionId);
+    }
+
+    public JobLaunchResult launchJob(String jobName, Map<String, Object> jobParameters, String existingExternalJobExecutionId) {
+
+        ensureJobWithParametersIsNotAlreadyPresent(jobName, jobParameters);
+
+        AcceptedJob acceptedJob = acceptJob(
+                jobName,
+                jobParameters,
+                existingExternalJobExecutionId
+        );
+
+        jobLauncherService.launchJob(acceptedJob.externalJobExecutionId(), jobName, jobParameters);
+
+        return new JobLaunchResult(acceptedJob.externalJobExecutionId());
+    }
+
+
+    @Transactional
+    public AcceptedJob acceptJob(String jobName, Map<String, Object> jobParameters, String existingExternalJobExecutionId) {
+        ensureJobWithParametersIsNotAlreadyPresent(jobName, jobParameters);
+
+        return findOrCreateExternalMapping(existingExternalJobExecutionId, jobName, jobParameters);
+    }
+
+    private void ensureJobWithParametersIsNotAlreadyPresent(String jobName, Map<String, Object> jobParameters) {
+        JobInstance existingJobInstance = jobExplorer.getJobInstance(jobName, JobParametersFactory.convertToJobParameters(jobParameters));
+
+        if (existingJobInstance != null) {
+            throw new JobExecutionCreationFailedException("Job-Execution already exists: %s".formatted(existingJobInstance.getInstanceId()));
+        }
+    }
+
+    private AcceptedJob findOrCreateExternalMapping(String existingExternalJobExecutionId, String jobName, Map<String, Object> jobParameters) {
+        if (existingExternalJobExecutionId != null) {
+            Optional<AcceptedJob> existingMapping = externalJobExecutionMappingRepository.findByExternalJobExecutionId(existingExternalJobExecutionId);
+
+            if (existingMapping.isPresent()) {
+                if (existingMapping.get().jobExecutionId() != null) {
+                    throw new JobExecutionCreationFailedException("Job-Execution already exists: %s".formatted(existingMapping.get().jobExecutionId()));
+                }
+                return existingMapping.get();
+            }
+
+        }
+
+        String externalJobExecutionId = UUID.randomUUID().toString();
+        try {
+            return externalJobExecutionMappingRepository.save(new AcceptedJob(
+                    externalJobExecutionId,
+                    null,
+                    null,
+                    "source-system",
+                    jobName,
+                    objectMapper.writeValueAsString(jobParameters),
+                    LocalDateTime.now()));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

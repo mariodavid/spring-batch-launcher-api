@@ -6,7 +6,20 @@ Content-Type: application/json
 {
   "jobName": "greetingJob",
   "jobParameters": {
-    "timeout": 5000
+    "greetingName": "Mario",
+    "timeout": 5010
+  }
+}
+###
+
+
+POST http://localhost:8081/jobs
+Content-Type: application/json
+
+{
+  "jobName": "greetingJob",
+  "jobParameters": {
+    "timeout": 5008
   }
 }
 

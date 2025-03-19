@@ -1,21 +1,40 @@
 package de.faktorzehn.batch.sample.app.shell.greeting;
 
+import java.util.Map;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 
 import de.faktorzehn.batch.core.JobLauncherService;
-import de.faktorzehn.batch.sample.app.shell.greeting.config.GreetingJobProperties;
+import de.faktorzehn.batch.core.exception.JobNotFoundException;
+import de.faktorzehn.batch.persistence.AcceptedJob;
+import de.faktorzehn.batch.persistence.AcceptedJobRepository;
+import de.faktorzehn.batch.sample.app.shell.greeting.config.JobProperties;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootApplication(scanBasePackages = {
         "de.faktorzehn.batch.sample.app.shell.greeting",
         "de.faktorzehn.batch.sample.job.greeting",
+        "de.faktorzehn.batch.persistence",
 })
-@EnableConfigurationProperties(GreetingJobProperties.class)
+@EnableConfigurationProperties({
+        JobProperties.class
+})
+@EnableJdbcRepositories(basePackages = "de.faktorzehn.batch.persistence")
 public class JobAppShellGreetingLocalApplication {
+
+    private static final Logger log = LoggerFactory.getLogger(JobAppShellGreetingLocalApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(JobAppShellGreetingLocalApplication.class, args);
@@ -23,9 +42,33 @@ public class JobAppShellGreetingLocalApplication {
 
 
     @Bean
-    public CommandLineRunner run(JobLauncherService jobLauncherService, GreetingJobProperties greetingJobProperties, Job greetingJob) {
-        return args -> {
-            jobLauncherService.launchJob(greetingJob.getName(), greetingJobProperties.toPrintJobParameters().getParameters());
-        };
+    public CommandLineRunner run(
+            JobLauncherService jobLauncherService,
+            JobProperties jobProperties,
+            AcceptedJobRepository acceptedJobRepository,
+            ObjectMapper objectMapper
+    ) {
+        String externalJobExecutionId = jobProperties.externalJobExecutionId();
+        Optional<AcceptedJob> potentialAcceptedJob = acceptedJobRepository.findByExternalJobExecutionId(externalJobExecutionId);
+
+
+        if (potentialAcceptedJob.isEmpty()) {
+            log.error("Provided external job execution id {} does not exist", externalJobExecutionId);
+            throw new JobNotFoundException("Provided external job execution id %s does not exist".formatted(externalJobExecutionId));
+        }
+
+        AcceptedJob acceptedJob = potentialAcceptedJob.get();
+        try {
+            Map<String, Object> jobParametersMap = objectMapper.readValue(acceptedJob.jobParameters(), new TypeReference<Map<String, Object>>() {});
+
+            return args -> jobLauncherService.launchJob(
+                    externalJobExecutionId,
+                    acceptedJob.jobName(),
+                    jobParametersMap
+            );
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

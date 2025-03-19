@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: faktorzehn
+      changes:
+        - createTable:
+            tableName: ACCEPTED_JOB
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: BATCH_EXTERNAL_JOB_EXECUTION_PKEY
+                  name: EXTERNAL_JOB_EXECUTION_ID
+                  type: VARCHAR(255)
+              - column:
+                  name: JOB_EXECUTION_ID
+                  type: BIGINT
+              - column:
+                  name: VERSION
+                  type: INT
+              - column:
+                  name: SOURCE_SYSTEM
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: JOB_NAME
+                  type: VARCHAR(255)
+              - column:
+                  name: JOB_PARAMETERS
+                  type: TEXT
+              - column:
+                  name: CREATED_AT
+                  type: TIMESTAMP WITHOUT TIME ZONE
+        - addForeignKeyConstraint:
+            baseColumnNames: JOB_EXECUTION_ID
+            baseTableName: ACCEPTED_JOB
+            constraintName: BATCH_EXTERNAL_JOB_EXEC_FK
+            referencedColumnNames: JOB_EXECUTION_ID
+            referencedTableName: BATCH_JOB_EXECUTION

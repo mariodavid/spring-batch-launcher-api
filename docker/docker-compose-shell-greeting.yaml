@@ -1,0 +1,13 @@
+services:
+
+  app-job-shell-greeting:
+    build:
+      context: ../sample/apps/job-app-shell-greeting-local/
+      dockerfile: Dockerfile
+    image: job-app-shell-greeting-local
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5437/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

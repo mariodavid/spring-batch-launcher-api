@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+        file: liquibase-changelogs/01.spring.batch.changelog.yml
+  - include:
+        file: liquibase-changelogs/02.accepted_job.changelog.yml
+  - include:
+        file: liquibase-changelogs/10.bill.statements.changelog.yml

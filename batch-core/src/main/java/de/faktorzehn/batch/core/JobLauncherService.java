@@ -1,7 +1,8 @@
 package de.faktorzehn.batch.core;
 
 import java.util.Map;
+import java.util.UUID;
 
 public interface JobLauncherService {
-    Long launchJob(String jobName, Map<String, Object> parameters);
+    void launchJob(String externalJobExecutionId, String jobName, Map<String, Object> parameters);
 }

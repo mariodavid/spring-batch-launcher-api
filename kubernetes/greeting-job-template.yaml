@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: greeting-job-template
+data:
+  job.yaml: |
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: greeting-job
+    spec:
+      template:
+        spec:
+          containers:
+            - name: greeting
+              image: job-app-shell-greeting-local:latest
+              imagePullPolicy: Never
+              envFrom:
+                - configMapRef:
+                    name: greeting-job-config
+          restartPolicy: Never

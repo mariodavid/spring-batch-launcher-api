@@ -33,6 +33,11 @@
         </dependency>
         <dependency>
             <groupId>de.faktorzehn</groupId>
+            <artifactId>batch-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.faktorzehn</groupId>
             <artifactId>batch-extapi</artifactId>
             <version>${project.version}</version>
         </dependency>

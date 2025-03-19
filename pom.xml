@@ -27,6 +27,7 @@
         <module>sample</module>
         <module>launcher</module>
         <module>batch-extapi</module>
+        <module>batch-persistence</module>
     </modules>
     <scm>
         <connection/>
@@ -37,20 +38,15 @@
     <properties>
         <java.version>21</java.version>
     </properties>
-    <dependencies>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-batch</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.batch</groupId>-->
-<!--            <artifactId>spring-batch-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-
-
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>kubernetes-client</artifactId>
+                <version>7.1.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

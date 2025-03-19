@@ -12,8 +12,9 @@
     <artifactId>launcher</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>local</module>
+        <module>launcher-local</module>
         <module>launcher-http</module>
+        <module>launcher-kubernetes</module>
     </modules>
 
     <properties>

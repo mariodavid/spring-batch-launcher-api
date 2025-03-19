@@ -15,6 +15,7 @@
     <modules>
         <module>apps</module>
         <module>jobs</module>
+        <module>apps/job-app-http-kubernetes</module>
     </modules>
 
     <properties>
