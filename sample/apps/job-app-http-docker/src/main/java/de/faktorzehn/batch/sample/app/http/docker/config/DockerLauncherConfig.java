@@ -19,8 +19,6 @@ import com.github.dockerjava.transport.DockerHttpClient;
 @Configuration
 public class DockerLauncherConfig {
 
-    private static final Logger log = LoggerFactory.getLogger(DockerLauncherConfig.class);
-
     @Bean
     public DockerJobConfigurationResolver dockerJobConfigurationResolver(DockerJobProperties dockerJobProperties) {
         return jobName -> dockerJobProperties.configurations()
