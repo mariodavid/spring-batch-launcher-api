@@ -10,7 +10,7 @@ import de.faktorzehn.batch.launcher.kubernetes.config.KubernetesJobConfiguration
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 @Configuration
-public class LauncherConfig {
+public class KubernetesLauncherConfig {
 
     @Bean
     public KubernetesJobConfigurationResolver kubernetesJobConfigurationResolver(KubernetesJobProperties kubernetesJobProperties) {

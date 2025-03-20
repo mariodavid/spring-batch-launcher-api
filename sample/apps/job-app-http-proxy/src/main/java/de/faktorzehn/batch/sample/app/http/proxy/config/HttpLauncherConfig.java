@@ -9,7 +9,7 @@ import de.faktorzehn.batch.launcher.http.HttpJobLauncherService;
 import de.faktorzehn.batch.launcher.http.config.HttpJobConfigurationResolver;
 
 @Configuration
-public class LauncherConfig {
+public class HttpLauncherConfig {
 
     @Bean
     public HttpJobConfigurationResolver httpJobConfigurationResolver(HttpJobProperties httpJobProperties) {
@@ -17,8 +17,7 @@ public class LauncherConfig {
                 .stream()
                 .filter(it -> it.jobName().equals(jobName))
                 .findFirst()
-                .orElseThrow()
-                .baseUrl();
+                .orElseThrow();
     }
 
     @Bean

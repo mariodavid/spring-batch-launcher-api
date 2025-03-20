@@ -3,7 +3,7 @@ package de.faktorzehn.batch.extapi;
 import java.time.LocalDateTime;
 
 public record JobStatusResponse(
-        String executionId,
+        String externalJobExecutionId,
         String status,
         LocalDateTime startTime,
         LocalDateTime endTime,

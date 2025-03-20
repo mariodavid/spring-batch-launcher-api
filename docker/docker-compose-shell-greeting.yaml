@@ -1,5 +1,6 @@
 services:
 
+
   app-job-shell-greeting:
     build:
       context: ../sample/apps/job-app-shell-greeting-local/
@@ -11,3 +12,28 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      batch-network:
+
+networks:
+  batch-network:
+      name: "batch-network"
+      external: false
+
+#  app-job-http-proxy:
+#    build:
+#      context: ../sample/apps/job-app-http-proxy/
+#      dockerfile: Dockerfile
+#    image: job-app-http-proxy
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5437/postgres
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgres
+#      job.http.configurations[0].job-name: greetingJob
+#      job.http.configurations[0].docker-image-name: job-app-shell-greeting-local
+#      job.http.configurations[0].docker-application-json: |
+#        SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5437/postgres
+#        SPRING_DATASOURCE_USERNAME: postgres
+#        SPRING_DATASOURCE_PASSWORD: postgres
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"

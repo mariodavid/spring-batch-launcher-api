@@ -2,19 +2,19 @@ package de.faktorzehn.batch.extapi;
 
 public class JobResponse {
     private String errorMessage;
-    private String executionId;
+    private String externalJobExecutionId;
 
-    public JobResponse(String executionId, String errorMessage) {
-        this.executionId = executionId;
+    public JobResponse(String externalJobExecutionId, String errorMessage) {
+        this.externalJobExecutionId = externalJobExecutionId;
         this.errorMessage = errorMessage;
     }
     
-    public String getExecutionId() {
-        return executionId;
+    public String getExternalJobExecutionId() {
+        return externalJobExecutionId;
     }
     
-    public void setExecutionId(String executionId) {
-        this.executionId = executionId;
+    public void setExternalJobExecutionId(String externalJobExecutionId) {
+        this.externalJobExecutionId = externalJobExecutionId;
     }
 
     public String getErrorMessage() {

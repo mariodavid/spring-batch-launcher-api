@@ -10,3 +10,10 @@ services:
       - "5437:5432"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      batch-network:
+
+networks:
+  batch-network:
+      name: "batch-network"
+      external: false

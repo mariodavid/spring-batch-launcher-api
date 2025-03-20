@@ -10,7 +10,7 @@ import de.faktorzehn.batch.core.JobLauncherService;
 import de.faktorzehn.batch.launcher.local.LocalJobLauncherService;
 
 @Configuration
-public class LauncherConfig {
+public class LocalLauncherConfig {
 
     @Bean
     public JobLauncherService jobLauncherService(JobLauncher jobLauncher, JobRegistry jobRegistry, JobExternalMappingUpdater jobExternalMappingUpdater) {

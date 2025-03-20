@@ -7,7 +7,7 @@ Content-Type: application/json
   "jobName": "greetingJob",
   "jobParameters": {
     "greetingName": "Mario",
-    "timeout": 5010
+    "timeout": 5011
   }
 }
 ###
@@ -19,31 +19,23 @@ Content-Type: application/json
 {
   "jobName": "greetingJob",
   "jobParameters": {
-    "timeout": 5008
+    "greetingName": "Mario",
+    "timeout": 510008
   }
 }
 
-###
-
-POST http://localhost:8081/jobs
-Content-Type: application/json
-
-{
-  "jobName": "printJob",
-  "jobParameters": {
-    "timeout": 5000
-  }
-}
+> {%
+    client.global.set("externalJobExecutionId", response.body.externalJobExecutionId)
+%}
 
 ###
 
-POST http://localhost:8080/jobs/1/stop
+POST http://localhost:8081/jobs/{{externalJobExecutionId}}/restart
 
 ###
 
-POST http://localhost:8080/jobs/1/restart
-
+POST http://localhost:8081/jobs/{{externalJobExecutionId}}/stop
 
 ###
 
-GET http://localhost:8080/jobs/1
+GET http://localhost:8081/jobs/{{externalJobExecutionId}}

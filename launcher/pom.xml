@@ -15,6 +15,7 @@
         <module>launcher-local</module>
         <module>launcher-http</module>
         <module>launcher-kubernetes</module>
+        <module>launcher-docker</module>
     </modules>
 
     <properties>

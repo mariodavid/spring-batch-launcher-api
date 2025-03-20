@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.faktorzehn.batch.core.JobLauncherService;
 import de.faktorzehn.batch.core.exception.JobExecutionCreationFailedException;
+import de.faktorzehn.batch.core.exception.JobNotFoundException;
+import de.faktorzehn.batch.core.exception.JobNotStartedException;
 import de.faktorzehn.batch.persistence.AcceptedJob;
 import de.faktorzehn.batch.persistence.AcceptedJobRepository;
 
@@ -29,35 +31,53 @@ public class BatchJobService {
     private final JobLauncherService jobLauncherService;
     private final AcceptedJobRepository externalJobExecutionMappingRepository;
     private final ObjectMapper objectMapper;
+    private final AcceptedJobRepository acceptedJobRepository;
 
 
-    public BatchJobService(JobExplorer jobExplorer, JobOperator jobOperator, JobLauncherService jobLauncherService, AcceptedJobRepository externalJobExecutionMappingRepository, ObjectMapper objectMapper) {
+    public BatchJobService(JobExplorer jobExplorer, JobOperator jobOperator, JobLauncherService jobLauncherService, AcceptedJobRepository externalJobExecutionMappingRepository, ObjectMapper objectMapper, AcceptedJobRepository acceptedJobRepository) {
         this.jobExplorer = jobExplorer;
         this.jobOperator = jobOperator;
         this.jobLauncherService = jobLauncherService;
         this.externalJobExecutionMappingRepository = externalJobExecutionMappingRepository;
         this.objectMapper = objectMapper;
+        this.acceptedJobRepository = acceptedJobRepository;
     }
 
-    public Long restartJob(Long executionId)  {
+    public Long restartJob(String externalJobExecutionId)  {
         try {
-            return jobOperator.restart(executionId);
+            return jobOperator.restart(lookupExecutionId(externalJobExecutionId));
         } catch (Exception e) {
             throw new RuntimeException("Job-Restart failed", e);
         }
     }
 
-    public void stop(long executionId) {
+    public void stop(String executionId) {
         try {
-            jobOperator.stop(executionId);
+            jobOperator.stop(lookupExecutionId(executionId));
         }
         catch (Exception e) {
             throw new RuntimeException("Job-Abondon failed", e);
         }
     }
 
-    public JobExecution getJobExecution(Long executionId) {
-        return jobExplorer.getJobExecution(executionId);
+    public JobExecution getJobExecution(String externalJobExecutionId) {
+        return jobExplorer.getJobExecution(lookupExecutionId(externalJobExecutionId));
+    }
+
+    private Long lookupExecutionId(String externalJobExecutionId) {
+        Optional<AcceptedJob> potentialAcceptedJob = acceptedJobRepository.findByExternalJobExecutionId(externalJobExecutionId);
+
+        if (potentialAcceptedJob.isEmpty()) {
+            throw new JobNotFoundException("Job not found for externalJobExecutionId: " + externalJobExecutionId);
+        }
+        AcceptedJob acceptedJob1 = potentialAcceptedJob.get();
+
+        Long executionId = acceptedJob1.jobExecutionId();
+
+        if (executionId == null) {
+            throw new JobNotStartedException("Job found for externalJobExecutionId: %s. But not yet started (executionId is null).".formatted(externalJobExecutionId));
+        }
+        return executionId;
     }
 
     public JobLaunchResult launchJob(String jobName, Map<String, Object> jobParameters, String existingExternalJobExecutionId) {

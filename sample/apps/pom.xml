@@ -17,6 +17,7 @@
         <module>job-app-http-greeting-local</module>
         <module>job-app-http-proxy</module>
         <module>job-app-shell-greeting-local</module>
+        <module>job-app-http-docker</module>
     </modules>
 
     <properties>

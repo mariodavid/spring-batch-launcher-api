@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.faktorzehn.batch.core.JobLauncherService;
 import de.faktorzehn.batch.core.exception.JobExecutionCreationFailedException;
 import de.faktorzehn.batch.core.exception.JobParameterValidationException;
 import de.faktorzehn.batch.extapi.JobRequest;
@@ -39,7 +38,7 @@ public class JobController {
     public ResponseEntity<JobResponse> launchJob(@RequestBody JobRequest request) {
         try {
             JobLaunchResult jobLaunchResult = batchJobService.launchJob(request.jobName(), request.jobParameters(), request.externalJobExecutionId());
-            return ResponseEntity.ok(new JobResponse(jobLaunchResult.externalJobExecutionId().toString(), null));
+            return ResponseEntity.ok(new JobResponse(jobLaunchResult.externalJobExecutionId(), null));
         } catch (JobParameterValidationException e) {
             return ResponseEntity.badRequest()
                     .body(new JobResponse(null,e.getMessage()));
@@ -53,31 +52,31 @@ public class JobController {
         }
     }
 
-    @GetMapping("/{executionId}")
-    public ResponseEntity<JobStatusResponse> getJobStatus(@PathVariable Long executionId) {
-        JobExecution jobExecution = batchJobService.getJobExecution(executionId);
+    @GetMapping("/{externalJobExecutionId}")
+    public ResponseEntity<JobStatusResponse> getJobStatus(@PathVariable String externalJobExecutionId) {
+        JobExecution jobExecution = batchJobService.getJobExecution(externalJobExecutionId);
         if (jobExecution == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(mapToResponse(executionId, jobExecution));
+        return ResponseEntity.ok(mapToResponse(externalJobExecutionId, jobExecution));
     }
 
 
-    @PostMapping("/{executionId}/stop")
-    public ResponseEntity<String> stopJob(@PathVariable long executionId) {
-        batchJobService.stop(executionId);
+    @PostMapping("/{externalJobExecutionId}/stop")
+    public ResponseEntity<String> stopJob(@PathVariable String externalJobExecutionId) {
+        batchJobService.stop(externalJobExecutionId);
         return ResponseEntity.accepted().build();
     }
 
-    @PostMapping("/{executionId}/restart")
-    public ResponseEntity<JobResponse> restartJob(@PathVariable Long executionId) {
-        Long restartedJobExecutionId = batchJobService.restartJob(executionId);
+    @PostMapping("/{externalJobExecutionId}/restart")
+    public ResponseEntity<JobResponse> restartJob(@PathVariable  String externalJobExecutionId) {
+        Long restartedJobExecutionId = batchJobService.restartJob(externalJobExecutionId);
         return ResponseEntity.ok(new JobResponse(restartedJobExecutionId.toString(), null));
     }
 
-    private static JobStatusResponse mapToResponse(Long executionId, JobExecution jobExecution) {
+    private static JobStatusResponse mapToResponse(String externalJobExecutionId, JobExecution jobExecution) {
         return new JobStatusResponse(
-                executionId.toString(),
+                externalJobExecutionId,
                 jobExecution.getStatus().toString(),
                 jobExecution.getStartTime(),
                 jobExecution.getEndTime(),

@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.faktorzehn</groupId>
-        <artifactId>apps</artifactId>
+        <artifactId>spring-boot-batch-api-example</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>job-app-shell-greeting-local</artifactId>
+    <artifactId>batch-execution</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -21,14 +21,21 @@
     <dependencies>
         <dependency>
             <groupId>de.faktorzehn</groupId>
-            <artifactId>launcher-local</artifactId>
+            <artifactId>batch-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>de.faktorzehn</groupId>
-            <artifactId>batch-execution</artifactId>
+            <artifactId>batch-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
     </dependencies>
-
 </project>

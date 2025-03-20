@@ -1,0 +1,40 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    access:
+      default: unrestricted
+spring:
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: 'false'
+  application:
+    name: job-app-proxy
+  liquibase:
+    change-log: classpath:/db/changelog.yml
+    enabled: 'true'
+  datasource:
+    password: postgres
+    username: postgres
+    url: jdbc:postgresql://localhost:5437/postgres
+server:
+  port: '8080'
+job:
+  docker:
+    configurations[0]:
+      network-name: batch-network
+      job-name: greetingJob
+      docker-image-name: job-app-shell-greeting-local:latest
+      spring-application-json: >
+        {
+          "spring": {
+            "datasource": {
+              "url": "jdbc:postgresql://postgres:5432/postgres",
+              "username": "postgres",
+              "password": "postgres"
+            }
+          }
+        }

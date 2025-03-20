@@ -2,5 +2,5 @@ package de.faktorzehn.batch.launcher.http.config;
 
 public interface HttpJobConfigurationResolver {
 
-    String resolveBaseUrl(String jobName);
+    HttpJobConfiguration resolve(String jobName);
 }

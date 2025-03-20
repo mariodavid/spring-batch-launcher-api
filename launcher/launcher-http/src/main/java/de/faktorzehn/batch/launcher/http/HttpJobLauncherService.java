@@ -1,7 +1,6 @@
 package de.faktorzehn.batch.launcher.http;
 
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,12 +12,13 @@ import de.faktorzehn.batch.core.exception.JobNotFoundException;
 import de.faktorzehn.batch.core.exception.JobParameterValidationException;
 import de.faktorzehn.batch.extapi.JobRequest;
 import de.faktorzehn.batch.extapi.JobResponse;
+import de.faktorzehn.batch.launcher.http.config.HttpJobConfiguration;
 import de.faktorzehn.batch.launcher.http.config.HttpJobConfigurationResolver;
 
 public class HttpJobLauncherService implements JobLauncherService {
 
-
     private static final Log log = LogFactory.getLog(HttpJobLauncherService.class);
+
     private final RestClient.Builder restClientBuilder;
     private final HttpJobConfigurationResolver httpJobConfigurationResolver;
 
@@ -29,9 +29,9 @@ public class HttpJobLauncherService implements JobLauncherService {
 
     @Override
     public void launchJob(String externalJobExecutionId, String jobName, Map<String, Object> parameters) {
-        String baseUrl = httpJobConfigurationResolver.resolveBaseUrl(jobName);
+        HttpJobConfiguration httpJobConfiguration = httpJobConfigurationResolver.resolve(jobName);
         var restClient = restClientBuilder
-                .baseUrl(baseUrl)
+                .baseUrl(httpJobConfiguration.baseUrl())
                 .build();
         try {
             JobResponse jobResponse = restClient.post()
