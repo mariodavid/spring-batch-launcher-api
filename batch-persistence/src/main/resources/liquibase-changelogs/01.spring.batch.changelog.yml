@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 1
-      author: faktorzehn
+      author: company
       changes:
         - createTable:
             columns:
@@ -28,7 +28,7 @@ databaseChangeLog:
             tableName: BATCH_JOB_INSTANCE
   - changeSet:
       id: 2
-      author: faktorzehn
+      author: company
       changes:
         - addUniqueConstraint:
             columnNames: JOB_NAME, JOB_KEY
@@ -36,7 +36,7 @@ databaseChangeLog:
             tableName: BATCH_JOB_INSTANCE
   - changeSet:
       id: 3
-      author: faktorzehn
+      author: company
       changes:
         - createSequence:
             cacheSize: 1
@@ -49,7 +49,7 @@ databaseChangeLog:
             startValue: 1
   - changeSet:
       id: 4
-      author: faktorzehn
+      author: company
       changes:
         - createSequence:
             cacheSize: 1
@@ -62,7 +62,7 @@ databaseChangeLog:
             startValue: 1
   - changeSet:
       id: 5
-      author: faktorzehn
+      author: company
       changes:
         - createSequence:
             cacheSize: 1
@@ -75,7 +75,7 @@ databaseChangeLog:
             startValue: 1
   - changeSet:
       id: 6
-      author: faktorzehn
+      author: company
       changes:
         - createTable:
             columns:
@@ -120,7 +120,7 @@ databaseChangeLog:
             tableName: BATCH_JOB_EXECUTION
   - changeSet:
       id: 7
-      author: faktorzehn
+      author: company
       changes:
         - createTable:
             columns:
@@ -142,7 +142,7 @@ databaseChangeLog:
             tableName: BATCH_JOB_EXECUTION_CONTEXT
   - changeSet:
       id: 8
-      author: faktorzehn
+      author: company
       changes:
         - createTable:
             columns:
@@ -172,7 +172,7 @@ databaseChangeLog:
             tableName: BATCH_JOB_EXECUTION_PARAMS
   - changeSet:
       id: 9
-      author: faktorzehn
+      author: company
       changes:
         - createTable:
             columns:
@@ -248,7 +248,7 @@ databaseChangeLog:
             tableName: BATCH_STEP_EXECUTION
   - changeSet:
       id: 10
-      author: faktorzehn
+      author: company
       changes:
         - createTable:
             columns:
@@ -270,7 +270,7 @@ databaseChangeLog:
             tableName: BATCH_STEP_EXECUTION_CONTEXT
   - changeSet:
       id: 11
-      author: faktorzehn
+      author: company
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: JOB_EXECUTION_ID
@@ -285,7 +285,7 @@ databaseChangeLog:
             validate: true
   - changeSet:
       id: 12
-      author: faktorzehn
+      author: company
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: JOB_EXECUTION_ID
@@ -300,7 +300,7 @@ databaseChangeLog:
             validate: true
   - changeSet:
       id: 13
-      author: faktorzehn
+      author: company
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: JOB_EXECUTION_ID
@@ -315,7 +315,7 @@ databaseChangeLog:
             validate: true
   - changeSet:
       id: 14
-      author: faktorzehn
+      author: company
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: JOB_INSTANCE_ID
@@ -330,7 +330,7 @@ databaseChangeLog:
             validate: true
   - changeSet:
       id: 15
-      author: faktorzehn
+      author: company
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: STEP_EXECUTION_ID

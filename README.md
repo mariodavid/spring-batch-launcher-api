@@ -1,6 +1,6 @@
-# Spring Batch API Spike
+# Spring Batch Launcher API
 
-This project is a technical spike to explore and demonstrate different strategies for triggering and orchestrating Spring Batch jobs via an HTTP-based API.
+This project is a technical example to explore and demonstrate different strategies for triggering and orchestrating Spring Batch jobs via an HTTP-based API.
 
 The main goal is to identify suitable approaches to asynchronously trigger batch jobs through a REST API, leveraging a centralized batch job repository to manage and monitor job executions across various deployment scenarios.
 

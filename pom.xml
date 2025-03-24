@@ -8,7 +8,7 @@
         <version>3.4.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>de.faktorzehn</groupId>
+    <groupId>com.company</groupId>
     <artifactId>spring-boot-batch-api-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>

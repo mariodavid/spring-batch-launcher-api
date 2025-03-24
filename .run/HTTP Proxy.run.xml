@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HTTP Proxy" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Proxy">
     <module name="job-app-http-proxy" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="de.faktorzehn.batch.sample.app.http.proxy.JobAppHttpProxyApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.company.batch.sample.app.http.proxy.JobAppHttpProxyApplication" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="de.faktorzehn.batch.sample.app.http.proxy.*" />
+        <option name="PATTERN" value="com.company.batch.sample.app.http.proxy.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

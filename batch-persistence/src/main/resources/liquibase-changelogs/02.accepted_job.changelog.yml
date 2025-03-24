@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 1
-      author: faktorzehn
+      author: company
       changes:
         - createTable:
             tableName: ACCEPTED_JOB
