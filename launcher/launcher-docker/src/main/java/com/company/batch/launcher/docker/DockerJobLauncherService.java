@@ -23,10 +23,8 @@ public class DockerJobLauncherService implements JobLauncherService {
 
     @Override
     public void launchJob(String externalJobExecutionId, String jobName, Map<String, Object> parameters) {
-        parameters.put("externalJobExecutionId", externalJobExecutionId);
 
         DockerJobConfiguration dockerJobConfiguration = dockerJobConfigurationResolver.resolve(jobName);
-
 
         CreateContainerResponse container = dockerClient.createContainerCmd(dockerJobConfiguration.dockerImageName())
                 .withEnv(
@@ -40,7 +38,7 @@ public class DockerJobLauncherService implements JobLauncherService {
                         HostConfig.newHostConfig()
                                 .withNetworkMode(dockerJobConfiguration.networkName())
                 )
-                .withName(jobName.toLowerCase() + "-" + System.currentTimeMillis())
+                .withName(jobName.toLowerCase() + "-" + externalJobExecutionId)
                 .exec();
 
         dockerClient.startContainerCmd(container.getId()).exec();

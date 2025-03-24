@@ -7,7 +7,23 @@ Content-Type: application/json
   "jobName": "greetingJob",
   "jobParameters": {
     "greetingName": "Mario",
-    "timeout": 5011
+    "timeout": 50191
+  }
+}
+
+> {%
+    client.global.set("externalJobExecutionId", response.body.externalJobExecutionId)
+%}
+###
+
+POST http://localhost:30080/jobs
+Content-Type: application/json
+
+{
+  "jobName": "greetingJob",
+  "jobParameters": {
+    "greetingName": "Mario",
+    "timeout": 50191
   }
 }
 

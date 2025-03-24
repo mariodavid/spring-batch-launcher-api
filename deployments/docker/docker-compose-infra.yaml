@@ -7,9 +7,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5437:5432"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "5432:5432"
     networks:
       batch-network:
 

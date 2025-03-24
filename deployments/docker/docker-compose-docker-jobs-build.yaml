@@ -1,10 +1,10 @@
 services:
 
-  app-job-shell-greeting:
+  app-shell-greeting:
     build:
-      context: ../sample/apps/job-app-shell-greeting-local/
+      context: ../../sample/apps/app-shell-greeting-local/
       dockerfile: Dockerfile
-    image: job-app-shell-greeting-local
+    image: app-shell-greeting-local
 
 networks:
   batch-network:

@@ -1,19 +1,12 @@
 services:
 
-
-  app-job-shell-greeting:
+  app-http-docker:
     build:
-      context: ../sample/apps/job-app-shell-greeting-local/
+      context: ../../sample/apps/app-http-docker/
       dockerfile: Dockerfile
-    image: job-app-shell-greeting-local
-
-  app-job-http-docker:
-    build:
-      context: ../sample/apps/job-app-http-docker/
-      dockerfile: Dockerfile
-    image: app-job-http-docker
+    image: app-http-docker
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5437/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       job.docker.configurations[0].job-name: greetingJob
@@ -22,18 +15,18 @@ services:
         {
           "spring": {
             "datasource": {
-              "url": "jdbc:postgresql://postgres:5437/postgres",
+              "url": "jdbc:postgresql://postgres:5432/postgres",
               "username": "postgres",
               "password": "postgres"
             }
           }
         }
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     ports:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      batch-network:
 
 networks:
   batch-network:

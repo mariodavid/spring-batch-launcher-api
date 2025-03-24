@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: greeting-job-config
 data:
-  SPRING_DATASOURCE_URL: "jdbc:postgresql://host.docker.internal:5437/postgres"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/postgres"
   SPRING_DATASOURCE_USERNAME: "postgres"
   SPRING_DATASOURCE_PASSWORD: "postgres"

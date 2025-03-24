@@ -1,5 +1,5 @@
 FROM eclipse-temurin:21
 
-COPY target/job-app-shell-greeting-local-0.0.1-SNAPSHOT.jar /application.jar
+COPY target/app-shell-greeting-local-0.0.1-SNAPSHOT.jar /application.jar
 
 CMD java -jar /application.jar "$@"

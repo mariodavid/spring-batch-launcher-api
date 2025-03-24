@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-http-kubernetes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-http-kubernetes
+  template:
+    metadata:
+      labels:
+        app: app-http-kubernetes
+    spec:
+      serviceAccountName: batch-job-sa
+      containers:
+        - name: app-http-kubernetes
+          image: app-http-kubernetes
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres.default.svc.cluster.local:5432/postgres"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "postgres"
+            - name: job.kubernetes.configurations[0].job-name
+              value: "greetingJob"
+            - name: job.kubernetes.configurations[0].job-template-name
+              value: "greeting-job-config"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"

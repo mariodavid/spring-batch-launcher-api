@@ -1,0 +1,13 @@
+services:
+
+  app-shell-greeting:
+    build:
+      context: ../../sample/apps/app-shell-greeting-local/
+      dockerfile: Dockerfile
+    image: app-shell-greeting-local
+
+  app-http-kubernetes:
+    build:
+      context: ../../sample/apps/app-http-kubernetes/
+      dockerfile: Dockerfile
+    image: app-http-kubernetes
