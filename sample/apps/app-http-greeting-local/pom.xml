@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>job-app-shell-greeting-local</artifactId>
+    <artifactId>app-http-greeting-local</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -21,14 +21,17 @@
     <dependencies>
         <dependency>
             <groupId>com.company</groupId>
-            <artifactId>launcher-local</artifactId>
+            <artifactId>batch-extservice</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.company</groupId>
-            <artifactId>batch-execution</artifactId>
+            <artifactId>launcher-local</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
     </dependencies>
-
 </project>

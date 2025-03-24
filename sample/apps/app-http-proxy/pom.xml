@@ -10,7 +10,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>job-app-http-kubernetes</artifactId>
+    <groupId>com.company.sample</groupId>
+    <artifactId>app-http-proxy</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -25,17 +26,14 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.company</groupId>
-            <artifactId>launcher-kubernetes</artifactId>
+            <groupId>com.company.launcher</groupId>
+            <artifactId>launcher-http</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>kubernetes-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
+
 </project>

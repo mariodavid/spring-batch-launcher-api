@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HTTP Greeting" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Proxy">
-    <module name="job-app-http-greeting-local" />
+    <module name="app-http-greeting-local" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.company.batch.sample.app.http.greeting.JobAppHttpGreetingLocalApplication" />
     <method v="2">
       <option name="Make" enabled="true" />

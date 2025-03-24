@@ -7,9 +7,10 @@
         <groupId>com.company</groupId>
         <artifactId>apps</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>job-app-http-docker</artifactId>
+    <artifactId>app-shell-greeting-local</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -20,21 +21,14 @@
     <dependencies>
         <dependency>
             <groupId>com.company</groupId>
-            <artifactId>batch-extservice</artifactId>
+            <artifactId>launcher-local</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.company</groupId>
-            <artifactId>launcher-docker</artifactId>
+            <artifactId>batch-execution</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.docker-java</groupId>
-            <artifactId>docker-java-transport-okhttp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-        </dependency>
     </dependencies>
+
 </project>

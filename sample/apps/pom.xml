@@ -14,10 +14,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>job-app-http-greeting-local</module>
-        <module>job-app-http-proxy</module>
-        <module>job-app-shell-greeting-local</module>
-        <module>job-app-http-docker</module>
+        <module>app-http-greeting-local</module>
+        <module>app-http-proxy</module>
+        <module>app-shell-greeting-local</module>
+        <module>app-http-docker</module>
     </modules>
 
     <properties>

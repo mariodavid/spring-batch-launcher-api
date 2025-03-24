@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HTTP K8s" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <module name="job-app-http-kubernetes" />
+    <module name="app-http-kubernetes" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.company.batch.sample.app.http.kubernetes.JobAppHttpKubernetesApplication" />
     <method v="2">
       <option name="Make" enabled="true" />

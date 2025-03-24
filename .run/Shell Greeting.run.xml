@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Shell Greeting" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <module name="job-app-shell-greeting-local" />
+    <module name="app-shell-greeting-local" />
     <selectedOptions>
       <option name="environmentVariables" />
     </selectedOptions>

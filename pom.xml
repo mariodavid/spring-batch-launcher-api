@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.company</groupId>
-    <artifactId>spring-boot-batch-api-example</artifactId>
+    <artifactId>spring-batch-launcher-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>spring-boot-batch-api-example</name>
-    <description>spring-boot-batch-api-example</description>
+    <name>spring-batch-launcher-api</name>
+    <description>spring-batch-launcher-api</description>
     <url/>
     <licenses>
         <license/>
@@ -23,12 +23,12 @@
     </developers>
     <modules>
         <module>batch-core</module>
+        <module>batch-persistence</module>
+        <module>batch-execution</module>
+        <module>batch-extapi</module>
         <module>batch-extservice</module>
         <module>sample</module>
         <module>launcher</module>
-        <module>batch-extapi</module>
-        <module>batch-persistence</module>
-        <module>batch-execution</module>
     </modules>
     <scm>
         <connection/>
