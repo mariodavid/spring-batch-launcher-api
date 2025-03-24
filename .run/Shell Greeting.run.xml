@@ -4,7 +4,7 @@
     <selectedOptions>
       <option name="environmentVariables" />
     </selectedOptions>
-    <option name="SPRING_BOOT_MAIN_CLASS" value="de.faktorzehn.batch.sample.app.shell.greeting.JobAppShellGreetingLocalApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.company.batch.sample.app.shell.greeting.JobAppShellGreetingLocalApplication" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
