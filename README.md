@@ -200,6 +200,7 @@ sequenceDiagram
 
 - **Launcher Strategies**  
   Contains different job execution strategies:
+    - **launcher-docker**: Dynamically starts Docker containers for batch execution.
     - **launcher-http**: Forwards job execution requests to another HTTP-Worker services (Job API Gateway).
     - **launcher-kubernetes**: Dynamically starts Kubernetes jobs for batch execution.
     - **launcher-local**: Executes the batch job locally within the application.
@@ -211,7 +212,8 @@ sequenceDiagram
 
 - **Sample Apps (sample/apps)**  
   Spring Boot applications demonstrating different execution strategies:
-    - **job-app-http-greeting-local**: HTTP server that executes the Greeting Job locally.
-    - **job-app-http-kubernetes**: HTTP API server that forwards job execution to Kubernetes.
-    - **job-app-http-proxy**: API Gateway that forwards job execution requests to registered HTTP worker services.
+    - **app-http-docker**: HTTP server that forwards job execution to Docker.
+    - **app-http-greeting-local**: HTTP server that executes the Greeting Job locally.
+    - **app-http-kubernetes**: HTTP API server that forwards job execution to Kubernetes.
+    - **app-http-proxy**: API Gateway that forwards job execution requests to registered HTTP worker services.
     - **job-app-shell-greeting-local**: Spring Boot application that executes the Greeting Job as an `ApplicationRunner`, used as a worker job in the Kubernetes example.
