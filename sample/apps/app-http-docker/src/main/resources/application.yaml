@@ -12,7 +12,7 @@ spring:
     job:
       enabled: 'false'
   application:
-    name: job-app-proxy
+    name: app-http-docker
   liquibase:
     change-log: classpath:/db/changelog.yml
     enabled: 'true'
