@@ -36,7 +36,7 @@ public class DockerJobLauncherService implements JobLauncherService {
                 )
                 .withHostConfig(
                         HostConfig.newHostConfig()
-                                .withNetworkMode(dockerJobConfiguration.networkName())
+                                .withNetworkMode(dockerJobConfiguration.dockerNetworkName())
                 )
                 .withName(jobName.toLowerCase() + "-" + externalJobExecutionId)
                 .exec();

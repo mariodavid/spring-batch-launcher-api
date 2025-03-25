@@ -135,9 +135,40 @@ sequenceDiagram
 
 This implementation leverages Kubernetes to manage batch job executions dynamically.
 
-Batch jobs are defined in advance within Kubernetes as YAML job templates, along with all required environment variables and configuration settings (e.g., secrets, data source credentials). These job templates exist as Kubernetes resources (ConfigMap). The server retrieves these predefined YAML templates via Kubernetes API and instantiates them dynamically. 
+Batch jobs are defined in advance within Kubernetes as YAML job templates, along with all required environment variables and configuration settings (e.g., secrets, data source credentials). These job templates exist as Kubernetes resources (ConfigMap). 
 
-Kubernetes does not allow creation of Jobs without immediately starting them. Thus, the "hack" to configure the job-template via a Config Map.
+The server retrieves these predefined YAML templates via Kubernetes API and instantiates them dynamically. 
+
+Here is an example of a pre-configured K8s Job template:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: greeting-job-template
+data:
+  job.yaml: |
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: greeting-job
+    spec:
+      template:
+        spec:
+          containers:
+            - name: greeting
+              image: job-app-shell-greeting-local:latest
+              imagePullPolicy: Never
+              envFrom:
+                - configMapRef:
+                    name: greeting-job-config
+          restartPolicy: Never
+```
+
+
+NOTE: Kubernetes does not allow creation of Jobs without immediately starting them. Thus, the "hack" to configure the job-template via a Config Map.
+
+For more information, see [K8s Deployment README](deployments/kubernetes/README.md).
 
 #### Sequence Diagram
 
@@ -179,6 +210,88 @@ sequenceDiagram
     Job Pod ->> Job Pod: Run Job
     Job Pod ->> Batch DB: Update Status
     deactivate Job Pod
+
+```
+
+
+### 4. Docker-based Job Execution
+
+This implementation leverages Docker to manage batch job executions dynamically.
+
+Since we are using docker compose for building the applications, we first need to build the images to make them available in the docker Daemon.
+
+After that the API server can start with the configuration information about the containers to start.
+
+The configuration of the container environment variables is configured in the `docker-compose.yaml` that contains the API server and the registration of the remote docker jobs:
+
+```yaml
+  app-http-docker:
+    build:
+      context: ../../sample/apps/app-http-docker/
+      dockerfile: Dockerfile
+    image: app-http-docker
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      job.docker.configurations[0].job-name: greetingJob
+      job.docker.configurations[0].docker-image-name: job-app-shell-greeting-local
+      job.docker.configurations[0].spring-application-json: >
+        {
+          "spring": {
+            "datasource": {
+              "url": "jdbc:postgresql://postgres:5432/postgres",
+              "username": "postgres",
+              "password": "postgres"
+            }
+          }
+        }
+```
+
+Additionally, the API server container needs to have access to the Docker deamon. In the example case, this is done by mounting the docker socket of the host into the container.
+
+For more information, see [Docker Deployment README](deployments/docker/README.md).
+
+#### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor Client
+    box Batch API Docker
+        participant JobGatewayController
+        participant DockerJobLauncherService
+    end
+
+    participant Batch DB
+
+    participant Docker Daemon
+    
+    participant Job Container
+    
+    Client ->> JobGatewayController: POST /jobs { jobName, parameters }
+    JobGatewayController ->> DockerJobLauncherService: Launch Job
+    activate DockerJobLauncherService
+    DockerJobLauncherService ->> DockerJobLauncherService: Validate Job
+    DockerJobLauncherService ->> Batch DB: Save Job
+    DockerJobLauncherService -->> JobGatewayController: Job launched
+    deactivate DockerJobLauncherService
+
+    JobGatewayController -->> Client: 200 - OK { externalJobExecutionId }
+    
+    activate DockerJobLauncherService
+    DockerJobLauncherService ->> Docker Daemon: Create Docker container from Image Name { externalJobExecutionId }
+    activate Docker Daemon
+    Docker Daemon -->> DockerJobLauncherService: Docker container launched
+
+    deactivate DockerJobLauncherService
+    Docker Daemon -->> Job Container: Creating Job Container
+    deactivate Docker Daemon
+    activate Job Container
+    Job Container ->> Batch DB: Load Job { externalJobExecutionId }
+    Job Container ->> Job Container: Validate Job
+    Job Container ->> Job Container: Run Job
+    Job Container ->> Batch DB: Update Status
+    deactivate Job Container
 
 ```
 
