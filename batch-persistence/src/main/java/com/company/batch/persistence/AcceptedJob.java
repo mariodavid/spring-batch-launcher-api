@@ -10,8 +10,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("accepted_job")
 public record AcceptedJob(
         @Id String externalJobExecutionId,
-        @Version Integer version,
         Long jobExecutionId,
+        @Version Integer version,
         String sourceSystem,
         String jobName,
         String jobParameters,

@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.company.batch.core.JobLauncherService;
+import com.company.batch.core.TaskLauncher;
 import com.company.batch.core.exception.JobNotFoundException;
 import com.company.batch.persistence.AcceptedJob;
 import com.company.batch.persistence.AcceptedJobRepository;
@@ -29,7 +29,7 @@ public class JobExecutionConfig {
 
     @Bean
     public CommandLineRunner executeJob(
-            JobLauncherService jobLauncherService,
+            TaskLauncher taskLauncher,
             JobProperties jobProperties,
             AcceptedJobRepository acceptedJobRepository,
             ObjectMapper objectMapper
@@ -46,7 +46,7 @@ public class JobExecutionConfig {
         try {
             Map<String, Object> jobParametersMap = objectMapper.readValue(acceptedJob.jobParameters(), new TypeReference<>() {});
 
-            return args -> jobLauncherService.launchJob(
+            return args -> taskLauncher.launchTask(
                     externalJobExecutionId,
                     acceptedJob.jobName(),
                     jobParametersMap

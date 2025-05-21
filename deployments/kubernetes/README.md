@@ -17,7 +17,7 @@ kubectl delete \
 
 #### 0. mvn install
 ```shell
-cd ../.. && mvn clean install
+cd ../.. && mvn clean install && cd deployments/kubernetes
 ```
 
 #### 1. starting postgres

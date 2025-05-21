@@ -10,7 +10,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       job.docker.configurations[0].job-name: greetingJob
-      job.docker.configurations[0].docker-image-name: job-app-shell-greeting-local
+      job.docker.configurations[0].docker-image-name: app-shell-greeting-local
       job.docker.configurations[0].docker-network-name: batch-network
       job.docker.configurations[0].spring-application-json: >
         {

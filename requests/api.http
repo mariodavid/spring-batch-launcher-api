@@ -39,7 +39,7 @@ Content-Type: application/json
 {
   "jobName": "greetingJob",
   "jobParameters": {
-    "greetingName": "Mario",
+    "greetingName": "Mario2",
     "timeout": 510008
   }
 }

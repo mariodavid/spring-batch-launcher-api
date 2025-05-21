@@ -157,7 +157,7 @@ data:
         spec:
           containers:
             - name: greeting
-              image: job-app-shell-greeting-local:latest
+              image: app-shell-greeting-local:latest
               imagePullPolicy: Never
               envFrom:
                 - configMapRef:
@@ -235,7 +235,7 @@ The configuration of the container environment variables is configured in the `d
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       job.docker.configurations[0].job-name: greetingJob
-      job.docker.configurations[0].docker-image-name: job-app-shell-greeting-local
+      job.docker.configurations[0].docker-image-name: app-shell-greeting-local
       job.docker.configurations[0].spring-application-json: >
         {
           "spring": {
@@ -329,4 +329,4 @@ sequenceDiagram
     - **app-http-greeting-local**: HTTP server that executes the Greeting Job locally.
     - **app-http-kubernetes**: HTTP API server that forwards job execution to Kubernetes.
     - **app-http-proxy**: API Gateway that forwards job execution requests to registered HTTP worker services.
-    - **job-app-shell-greeting-local**: Spring Boot application that executes the Greeting Job as an `ApplicationRunner`, used as a worker job in the Kubernetes example.
+    - **app-shell-greeting-local**: Spring Boot application that executes the Greeting Job as an `ApplicationRunner`, used as a worker job in the Kubernetes example.

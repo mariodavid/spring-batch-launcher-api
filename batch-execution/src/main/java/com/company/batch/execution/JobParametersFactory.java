@@ -1,4 +1,4 @@
-package com.company.batch.launcher.local;
+package com.company.batch.execution;
 
 import java.time.LocalDate;
 import java.util.Date;
