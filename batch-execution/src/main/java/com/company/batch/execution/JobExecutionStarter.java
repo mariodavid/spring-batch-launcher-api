@@ -5,10 +5,9 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
+import org.springframework.batch.core.JobExecution;
 
-import com.company.batch.core.TaskLauncher;
+import com.company.batch.core.JobExternalMappingUpdater;
 import com.company.batch.core.exception.JobNotFoundException;
 import com.company.batch.persistence.AcceptedJob;
 import com.company.batch.persistence.AcceptedJobRepository;
@@ -22,14 +21,16 @@ public class JobExecutionStarter {
 
     private static final Logger log = LoggerFactory.getLogger(JobExecutionStarter.class);
 
-    private final TaskLauncher taskLauncher;
+    private final BatchExecutor batchExecutor;
     private final AcceptedJobRepository acceptedJobRepository;
     private final ObjectMapper objectMapper;
+    private final JobExternalMappingUpdater jobExternalMappingUpdater;
 
-    public JobExecutionStarter(TaskLauncher taskLauncher, AcceptedJobRepository acceptedJobRepository, ObjectMapper objectMapper) {
-        this.taskLauncher = taskLauncher;
+    public JobExecutionStarter(BatchExecutor batchExecutor, AcceptedJobRepository acceptedJobRepository, ObjectMapper objectMapper, JobExternalMappingUpdater jobExternalMappingUpdater) {
+        this.batchExecutor = batchExecutor;
         this.acceptedJobRepository = acceptedJobRepository;
         this.objectMapper = objectMapper;
+        this.jobExternalMappingUpdater = jobExternalMappingUpdater;
     }
 
     public void start(String externalJobExecutionId) {
@@ -43,12 +44,12 @@ public class JobExecutionStarter {
         AcceptedJob acceptedJob = potentialAcceptedJob.get();
         try {
             Map<String, Object> jobParametersMap = objectMapper.readValue(acceptedJob.jobParameters(), new TypeReference<>() {});
-
-            taskLauncher.launchTask(
-                    externalJobExecutionId,
-                    acceptedJob.jobName(),
-                    jobParametersMap
-            );
+            try {
+                JobExecution jobExecution = batchExecutor.execute(externalJobExecutionId, acceptedJob.jobName(), jobParametersMap);
+                jobExternalMappingUpdater.updateExternalJobExecutionId(externalJobExecutionId, jobExecution.getId());
+            }catch (Exception e) {
+                throw new RuntimeException("Job-Start failed", e);
+            }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

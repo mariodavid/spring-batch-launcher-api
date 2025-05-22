@@ -2,35 +2,22 @@ package com.company.batch.launcher.local;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.configuration.JobRegistry;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.NoSuchJobException;
-
-import com.company.batch.core.JobExternalMappingUpdater;
 import com.company.batch.core.TaskLauncher;
-import com.company.batch.execution.BatchExecutor;
+import com.company.batch.execution.JobExecutionStarter;
 
 
 public class InMemoryTaskLauncher implements TaskLauncher {
 
-    private final JobExternalMappingUpdater jobExternalMappingUpdater;
-    private final BatchExecutor batchExecutor;
+    private final JobExecutionStarter jobExecutionStarter;
 
-    public InMemoryTaskLauncher(JobExternalMappingUpdater jobExternalMappingUpdater, BatchExecutor batchExecutor) {
-        this.jobExternalMappingUpdater = jobExternalMappingUpdater;
-        this.batchExecutor = batchExecutor;
+    public InMemoryTaskLauncher(JobExecutionStarter jobExecutionStarter) {
+        this.jobExecutionStarter = jobExecutionStarter;
     }
 
     @Override
     public void launchTask(String externalJobExecutionId, String jobName, Map<String, Object> parameters) {
-
         try {
-            JobExecution jobExecution = batchExecutor.execute(externalJobExecutionId, jobName, parameters);
-            jobExternalMappingUpdater.updateExternalJobExecutionId(externalJobExecutionId, jobExecution.getId());
+            jobExecutionStarter.start(externalJobExecutionId);
         }catch (Exception e) {
             throw new RuntimeException("Job-Start failed", e);
         }

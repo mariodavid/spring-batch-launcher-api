@@ -13,8 +13,6 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
-//import com.github.dockerjava.okhttp.OkDockerHttpClient;
-//import com.github.dockerjava.transport.DockerHttpClient;
 
 @Configuration
 public class DockerLauncherConfig {

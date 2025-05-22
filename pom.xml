@@ -24,7 +24,7 @@
     <modules>
         <module>batch-core</module>
         <module>batch-persistence</module>
-        <module>batch-cli-execution</module>
+        <module>batch-cli-execution-starter</module>
         <module>batch-execution</module>
         <module>batch-extapi</module>
         <module>batch-extservice</module>

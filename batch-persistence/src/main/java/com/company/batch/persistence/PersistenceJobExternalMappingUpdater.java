@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.company.batch.core.JobExternalMappingUpdater;
 import com.company.batch.core.exception.JobNotFoundException;
 
-@Component
 public class PersistenceJobExternalMappingUpdater implements JobExternalMappingUpdater {
 
     private static final Logger log = LoggerFactory.getLogger(PersistenceJobExternalMappingUpdater.class);
@@ -32,8 +31,8 @@ public class PersistenceJobExternalMappingUpdater implements JobExternalMappingU
         AcceptedJob acceptedJob = potentialAcceptedJob.get();
         AcceptedJob updatedJob = new AcceptedJob(
                 acceptedJob.externalJobExecutionId(),
-                acceptedJob.version(),
                 jobExecutionId,
+                acceptedJob.version(),
                 acceptedJob.sourceSystem(),
                 acceptedJob.jobName(),
                 acceptedJob.jobParameters(),
