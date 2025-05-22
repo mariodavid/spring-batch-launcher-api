@@ -12,7 +12,7 @@ docker compose \
 
 #### 0. mvn install
 ```shell
-cd ../.. && mvn clean install
+cd ../.. && mvn clean install && cd deployments/docker
 ```
 
 #### 1. starting postgres
@@ -36,6 +36,21 @@ docker compose -f docker-compose-http-docker.yaml up --build -d
 export GREETING_NAME="user"
 export TIMEOUT=$(( RANDOM % 9001 + 1000 ))
 
+curl -s -X POST --location "http://localhost:8080/jobs" \
+    -H "Content-Type: application/json" \
+    -d "{
+          \"jobName\": \"greetingJob\",
+          \"jobParameters\": {
+            \"greetingName\": \"$GREETING_NAME\",
+            \"timeout\": $TIMEOUT
+          }
+        }" | jq
+```
+
+```shell
+export GREETING_NAME="user"
+export TIMEOUT=$(( RANDOM % 9001 + 1000 ))
+
 export EXTERNAL_JOB_EXECUTION_ID=$(curl -s -X POST --location "http://localhost:8080/jobs" \
     -H "Content-Type: application/json" \
     -d "{
@@ -54,5 +69,5 @@ docker ps -a --filter "label=com.company.batch.job.external-job-execution-id=$EX
 ```
 
 ```shell
-docker logs greetingjob-$EXTERNAL_JOB_EXECUTION_ID | grep "Hello $GREETING_NAME"
+docker logs greetingjob-$EXTERNAL_JOB_EXECUTION_ID
 ```

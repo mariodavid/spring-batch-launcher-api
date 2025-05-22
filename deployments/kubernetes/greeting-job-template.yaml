@@ -13,7 +13,7 @@ data:
         spec:
           containers:
             - name: greeting
-              image: job-app-shell-greeting-local:latest
+              image: app-shell-greeting-local:latest
               imagePullPolicy: Never
               envFrom:
                 - configMapRef:

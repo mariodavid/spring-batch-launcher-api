@@ -2,7 +2,7 @@ package com.company.batch.launcher.kubernetes;
 
 import java.util.Map;
 
-import com.company.batch.core.JobLauncherService;
+import com.company.batch.core.TaskLauncher;
 import com.company.batch.launcher.kubernetes.config.KubernetesJobConfigurationResolver;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -13,20 +13,20 @@ import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
-public class KubernetesJobLauncherService implements JobLauncherService {
+public class KubernetesTaskLauncher implements TaskLauncher {
 
     private final KubernetesJobConfigurationResolver kubernetesJobConfigurationResolver;
     private final KubernetesClient kubernetesClient;
     private final String namespace = "default";
     private static final String CONFIG_MAP_KEY = "job.yaml";
 
-    public KubernetesJobLauncherService(KubernetesClient kubernetesClient, KubernetesJobConfigurationResolver kubernetesJobConfigurationResolver) {
+    public KubernetesTaskLauncher(KubernetesClient kubernetesClient, KubernetesJobConfigurationResolver kubernetesJobConfigurationResolver) {
         this.kubernetesJobConfigurationResolver = kubernetesJobConfigurationResolver;
         this.kubernetesClient = kubernetesClient;
     }
 
     @Override
-    public void launchJob(String externalJobExecutionId, String jobName, Map<String, Object> parameters) {
+    public void launchTask(String externalJobExecutionId, String jobName, Map<String, Object> parameters) {
 
         Job job = createJobFromTemplate(jobName);
 

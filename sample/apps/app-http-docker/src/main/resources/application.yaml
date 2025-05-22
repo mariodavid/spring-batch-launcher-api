@@ -19,22 +19,22 @@ spring:
   datasource:
     password: postgres
     username: postgres
-    url: jdbc:postgresql://localhost:5437/postgres
+    url: jdbc:postgresql://localhost:5432/postgres
 server:
   port: '8080'
 job:
   docker:
-    configurations[0]:
-      network-name: batch-network
-      job-name: greetingJob
-      docker-image-name: job-app-shell-greeting-local:latest
-      spring-application-json: >
-        {
-          "spring": {
-            "datasource": {
-              "url": "jdbc:postgresql://postgres:5432/postgres",
-              "username": "postgres",
-              "password": "postgres"
+    configurations:
+      - job-name: greetingJob
+        docker-image-name: app-shell-greeting-local:latest
+        docker-network-name: batch-network
+        spring-application-json: >
+          {
+            "spring": {
+              "datasource": {
+                "url": "jdbc:postgresql://postgres:5432/postgres",
+                "username": "postgres",
+                "password": "postgres"
+              }
             }
           }
-        }

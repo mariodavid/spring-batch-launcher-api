@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.company</groupId>
-        <artifactId>apps</artifactId>
+        <artifactId>spring-boot-batch-api-example</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>app-http-docker</artifactId>
+    <artifactId>batch-cli-execution-starter</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -20,22 +21,17 @@
     <dependencies>
         <dependency>
             <groupId>com.company</groupId>
-            <artifactId>batch-extservice</artifactId>
+            <artifactId>batch-execution</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.company</groupId>
-            <artifactId>launcher-docker</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.docker-java</groupId>
-            <artifactId>docker-java-transport-httpclient5</artifactId>
-            <version>3.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
         </dependency>
     </dependencies>
 </project>
+

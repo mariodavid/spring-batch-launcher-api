@@ -3,8 +3,8 @@ package com.company.batch.sample.app.http.kubernetes.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.company.batch.core.JobLauncherService;
-import com.company.batch.launcher.kubernetes.KubernetesJobLauncherService;
+import com.company.batch.core.TaskLauncher;
+import com.company.batch.launcher.kubernetes.KubernetesTaskLauncher;
 import com.company.batch.launcher.kubernetes.config.KubernetesJobConfigurationResolver;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -23,8 +23,8 @@ public class KubernetesLauncherConfig {
     }
 
     @Bean
-    public JobLauncherService jobLauncherService(KubernetesClient kubernetesClient, KubernetesJobConfigurationResolver kubernetesJobConfigurationResolver) {
-        return new KubernetesJobLauncherService(kubernetesClient, kubernetesJobConfigurationResolver);
+    public TaskLauncher jobLauncherService(KubernetesClient kubernetesClient, KubernetesJobConfigurationResolver kubernetesJobConfigurationResolver) {
+        return new KubernetesTaskLauncher(kubernetesClient, kubernetesJobConfigurationResolver);
     }
 
 }

@@ -4,8 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
-import com.company.batch.core.JobLauncherService;
-import com.company.batch.launcher.http.HttpJobLauncherService;
+import com.company.batch.core.TaskLauncher;
+import com.company.batch.launcher.http.HttpTaskLauncher;
 import com.company.batch.launcher.http.config.HttpJobConfigurationResolver;
 
 @Configuration
@@ -21,8 +21,8 @@ public class HttpLauncherConfig {
     }
 
     @Bean
-    public JobLauncherService jobLauncherService(RestClient.Builder restClientBuilder, HttpJobConfigurationResolver httpJobConfigurationResolver) {
-        return new HttpJobLauncherService(restClientBuilder, httpJobConfigurationResolver);
+    public TaskLauncher jobLauncherService(RestClient.Builder restClientBuilder, HttpJobConfigurationResolver httpJobConfigurationResolver) {
+        return new HttpTaskLauncher(restClientBuilder, httpJobConfigurationResolver);
     }
 
 }

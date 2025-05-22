@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.client.RestClient;
 
-import com.company.batch.core.JobLauncherService;
+import com.company.batch.core.TaskLauncher;
 import com.company.batch.core.exception.JobExecutionCreationFailedException;
 import com.company.batch.core.exception.JobNotFoundException;
 import com.company.batch.core.exception.JobParameterValidationException;
@@ -15,20 +15,20 @@ import com.company.batch.extapi.JobResponse;
 import com.company.batch.launcher.http.config.HttpJobConfiguration;
 import com.company.batch.launcher.http.config.HttpJobConfigurationResolver;
 
-public class HttpJobLauncherService implements JobLauncherService {
+public class HttpTaskLauncher implements TaskLauncher {
 
-    private static final Log log = LogFactory.getLog(HttpJobLauncherService.class);
+    private static final Log log = LogFactory.getLog(HttpTaskLauncher.class);
 
     private final RestClient.Builder restClientBuilder;
     private final HttpJobConfigurationResolver httpJobConfigurationResolver;
 
-    public HttpJobLauncherService(RestClient.Builder restClientBuilder, HttpJobConfigurationResolver httpJobConfigurationResolver) {
+    public HttpTaskLauncher(RestClient.Builder restClientBuilder, HttpJobConfigurationResolver httpJobConfigurationResolver) {
         this.restClientBuilder = restClientBuilder;
         this.httpJobConfigurationResolver = httpJobConfigurationResolver;
     }
 
     @Override
-    public void launchJob(String externalJobExecutionId, String jobName, Map<String, Object> parameters) {
+    public void launchTask(String externalJobExecutionId, String jobName, Map<String, Object> parameters) {
         HttpJobConfiguration httpJobConfiguration = httpJobConfigurationResolver.resolve(jobName);
         var restClient = restClientBuilder
                 .baseUrl(httpJobConfiguration.baseUrl())

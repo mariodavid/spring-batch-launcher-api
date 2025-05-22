@@ -24,6 +24,7 @@
     <modules>
         <module>batch-core</module>
         <module>batch-persistence</module>
+        <module>batch-cli-execution-starter</module>
         <module>batch-execution</module>
         <module>batch-extapi</module>
         <module>batch-extservice</module>
@@ -52,10 +53,15 @@
                 <artifactId>docker-java</artifactId>
                 <version>3.4.2</version>
             </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.github.docker-java</groupId>-->
+<!--                <artifactId>docker-java-transport-okhttp</artifactId>-->
+<!--                <version>3.4.2</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>com.github.docker-java</groupId>
-                <artifactId>docker-java-transport-okhttp</artifactId>
-                <version>3.4.2</version>
+                <artifactId>docker-java-transport-httpclient5</artifactId>
+                <version>3.5.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,5 +1,6 @@
 package com.company.batch.sample.app.http.greeting.config;
 
+import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
@@ -8,6 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+
+import com.company.batch.core.JobExternalMappingUpdater;
+import com.company.batch.execution.BatchExecutor;
+import com.company.batch.execution.SpringBatchExecutor;
 
 @Configuration
 public class BatchConfig extends DefaultBatchConfiguration {
@@ -24,6 +29,11 @@ public class BatchConfig extends DefaultBatchConfiguration {
         jobLauncher.setTaskExecutor(taskExecutor);
         jobLauncher.afterPropertiesSet();
         return jobLauncher;
+    }
+
+    @Bean
+    public BatchExecutor batchExecutor(JobLauncher jobLauncher, JobRegistry jobRegistry, JobExternalMappingUpdater jobExternalMappingUpdater) throws Exception {
+        return new SpringBatchExecutor(jobLauncher, jobRegistry, jobExternalMappingUpdater);
     }
 
 }

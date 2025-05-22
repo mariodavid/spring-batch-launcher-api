@@ -12,7 +12,7 @@ import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.company.batch.core.JobLauncherService;
+import com.company.batch.core.TaskLauncher;
 import com.company.batch.core.exception.JobExecutionCreationFailedException;
 import com.company.batch.core.exception.JobNotFoundException;
 import com.company.batch.core.exception.JobNotStartedException;
@@ -28,13 +28,13 @@ public class BatchJobService {
     
     private final JobExplorer jobExplorer;
     private final JobOperator jobOperator;
-    private final JobLauncherService jobLauncherService;
+    private final TaskLauncher jobLauncherService;
     private final AcceptedJobRepository externalJobExecutionMappingRepository;
     private final ObjectMapper objectMapper;
     private final AcceptedJobRepository acceptedJobRepository;
 
 
-    public BatchJobService(JobExplorer jobExplorer, JobOperator jobOperator, JobLauncherService jobLauncherService, AcceptedJobRepository externalJobExecutionMappingRepository, ObjectMapper objectMapper, AcceptedJobRepository acceptedJobRepository) {
+    public BatchJobService(JobExplorer jobExplorer, JobOperator jobOperator, TaskLauncher jobLauncherService, AcceptedJobRepository externalJobExecutionMappingRepository, ObjectMapper objectMapper, AcceptedJobRepository acceptedJobRepository) {
         this.jobExplorer = jobExplorer;
         this.jobOperator = jobOperator;
         this.jobLauncherService = jobLauncherService;
@@ -90,7 +90,7 @@ public class BatchJobService {
                 existingExternalJobExecutionId
         );
 
-        jobLauncherService.launchJob(acceptedJob.externalJobExecutionId(), jobName, jobParameters);
+        jobLauncherService.launchTask(acceptedJob.externalJobExecutionId(), jobName, jobParameters);
 
         return new JobLaunchResult(acceptedJob.externalJobExecutionId());
     }
